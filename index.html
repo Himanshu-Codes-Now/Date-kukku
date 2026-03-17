@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Special Message for Kanika ❤️</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+text-align:center;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+}
+
+#mainPage{
+display:none;
+flex-direction:column;
+align-items:center;
+}
+
+h1{font-size:34px;}
+p{font-size:20px;margin:15px;}
+
+button{
+padding:15px 30px;
+font-size:18px;
+border:none;
+border-radius:12px;
+margin:10px;
+cursor:pointer;
+transition:0.3s;
+}
+
+#yes{
+background:#ff4d6d;
+color:white;
+}
+
+#no{
+background:#222;
+color:white;
+position:absolute;
+}
+
+#progressContainer{
+width:280px;
+height:22px;
+background:#ddd;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:10px;
+}
+
+#progressBar{
+height:100%;
+width:0%;
+background:#ff4d6d;
+}
+
+.confetti{
+position:absolute;
+font-size:22px;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh)}
+100%{transform:translateY(110vh)}
+}
+
+/* Notification */
+#notificationScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+z-index:999;
+}
+
+.iphoneBox{
+background:#1c1c1e;
+padding:30px;
+border-radius:20px;
+width:260px;
+text-align:center;
+box-shadow:0 0 20px rgba(255,255,255,0.2);
+}
+
+.iphoneBox button{
+background:#0a84ff;
+color:white;
+padding:10px 20px;
+border:none;
+border-radius:10px;
+margin-top:10px;
+}
+
+/* Waiting animation */
+.loader{
+border:5px solid #fff;
+border-top:5px solid #ff4d6d;
+border-radius:50%;
+width:40px;
+height:40px;
+animation:spin 1s linear infinite;
+margin-top:20px;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Notification -->
+<div id="notificationScreen">
+<div class="iphoneBox">
+<h3>📱 New Notification</h3>
+<p><b>Kanika ❤️</b></p>
+<p>You received a special message</p>
+<button onclick="openMessage()">Tap to Open</button>
+</div>
+</div>
+
+<!-- Main -->
+<div id="mainPage">
+
+<h1>Hey Kanika 👀</h1>
+<p id="message">Will you go on a date with me this Saturday? ❤️</p>
+
+<div id="progressContainer">
+<div id="progressBar"></div>
+</div>
+
+<p>Convincing Kanika...</p>
+
+<div>
+<button id="yes" onclick="yesClicked()">YES 😍</button>
+<button id="no">NO 🙄</button>
+</div>
+
+</div>
+
+<!-- Music -->
+<audio id="romanticSong" loop>
+<source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes/Corporate__Motivational_Music/Scott_Holmes_-_05_-_Together_We_Are_One.mp3">
+</audio>
+
+<script>
+
+function openMessage(){
+document.getElementById("notificationScreen").style.display="none";
+document.getElementById("mainPage").style.display="flex";
+document.getElementById("romanticSong").play();
+}
+
+let noButton=document.getElementById("no");
+let yesButton=document.getElementById("yes");
+let progressBar=document.getElementById("progressBar");
+let message=document.getElementById("message");
+
+let progress=0;
+let yesSize=1;
+
+const roastMessages=[
+"Kanika... that didn't look like YES 🤨",
+"AI Analysis: wrong choice detected 🤖",
+"Recalculating... it's YES 😌",
+"Error ❌ NO not allowed",
+"Stop playing Kanika 😂",
+"बस हां बोल दो 🥺",
+"I’ll bring chocolate 🍫",
+"Final warning 😏"
+];
+
+let roastIndex=0;
+
+/* 💔 Smart NO movement */
+noButton.addEventListener("mousemove",function(e){
+
+let rect=noButton.getBoundingClientRect();
+
+let btnX=rect.left+rect.width/2;
+let btnY=rect.top+rect.height/2;
+
+let dx=btnX-e.clientX;
+let dy=btnY-e.clientY;
+
+let distance=Math.sqrt(dx*dx+dy*dy);
+
+if(distance<120){
+
+let force=150/distance;
+
+let newX=rect.left+(dx*force);
+let newY=rect.top+(dy*force);
+
+newX=Math.max(0,Math.min(window.innerWidth-rect.width,newX));
+newY=Math.max(0,Math.min(window.innerHeight-rect.height,newY));
+
+noButton.style.left=newX+"px";
+noButton.style.top=newY+"px";
+
+progress+=12;
+if(progress>100) progress=100;
+
+progressBar.style.width=progress+"%";
+
+yesSize+=0.2;
+yesButton.style.transform="scale("+yesSize+")";
+
+if(roastIndex<roastMessages.length){
+message.innerText=roastMessages[roastIndex++];
+}
+
+}
+
+});
+
+/* ❤️ YES */
+function yesClicked(){
+
+document.body.innerHTML=`
+<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;">
+
+<h1>YAYYYYY KANIKA!!! 🎉</h1>
+<h2>Date Confirmed ❤️</h2>
+
+<p>Saturday is officially ours 😌</p>
+
+<button onclick="openMaps()">📍 Choose Location</button>
+<button onclick="openDineout()">🍽️ Book Cafe</button>
+<button onclick="openWhatsApp()">💬 Confirm on WhatsApp</button>
+
+</div>
+`;
+
+/* Confetti */
+for(let i=0;i<120;i++){
+let c=document.createElement("div");
+c.className="confetti";
+c.innerHTML=Math.random()>0.5?"🎉":"❤️";
+c.style.left=Math.random()*100+"vw";
+document.body.appendChild(c);
+}
+
+}
+
+/* Links */
+function openMaps(){
+window.open("https://www.google.com/maps?q=Blue+Tokai+Coffee","_blank");
+}
+
+function openDineout(){
+window.open("https://www.swiggy.com/dineout","_blank");
+}
+
+/* 💬 WhatsApp + waiting screen */
+function openWhatsApp(){
+
+let phone="919592461081";
+
+let msg=encodeURIComponent(
+"Okay I tried pressing NO but it wasn’t working 😂❤️\n\nSo YES… Saturday is ours 😌"
+);
+
+window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
+
+/* show waiting screen */
+document.body.innerHTML=`
+<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;text-align:center;">
+
+<h1>Waiting for your reply... ❤️</h1>
+<p>I’ll be right here 😌</p>
+
+<div class="loader"></div>
+
+</div>
+`;
+
+}
+
+</script>
+
+</body>
+</html>
